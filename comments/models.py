@@ -3,11 +3,18 @@ from resumes.models import Resume
 from django.utils import timezone
 
 
+class CommentsManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(deleted_at=None)
+
+
 class Comments(models.Model):
     resume = models.ForeignKey(Resume, on_delete=models.CASCADE)
     content = models.CharField(max_length=100)
     create_at = models.DateTimeField(auto_now_add=True)
     deleted_at = models.DateTimeField(null=True, db_index=True)
+
+    objects = CommentsManager()
 
     def delete(self):
         self.deleted_at = timezone.now()

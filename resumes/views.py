@@ -23,7 +23,7 @@ def show(request, id):
         forms = ResumeForm(request.POST, instance=resumes)
         forms.save()
         return redirect("resumes:home")
-    comments = resumes.comments_set.order_by("-id").filter(deleted_at=None)
+    comments = resumes.comments_set.order_by("-id").all()
     return render(
         request, "resumes/show.html", {"resumes": resumes, "comments": comments}
     )

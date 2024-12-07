@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, get_object_or_404
 from resumes.models import Resume
 from .models import Comments
+from django.views.decorators.http import require_POST
 
 
 def index(request, id):
@@ -11,11 +12,11 @@ def index(request, id):
     return redirect("resumes:show", id=resumes.id)
 
 
+@require_POST
 def delete(request, id):
     comments = get_object_or_404(Comments, id=id)
-    if request.POST:
-        comments.delete()
-        return redirect("resumes:show", id=comments.resume.id)
+    comments.delete()
+    return redirect("resumes:show", id=comments.resume.id)
 
 
 # Create your views here.

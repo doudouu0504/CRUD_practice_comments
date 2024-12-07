@@ -1,0 +1,27 @@
+{% extends "shared/layout.html" %}{% block "content" %}
+<h3>履歷</h3>
+{{resumes.title}}<br />
+{{resumes.skill}} <br />
+{{resumes.content}} <br />
+<a href="{%url 'resumes:home'%}">返回</a>
+<a href="{%url 'resumes:edit' resumes.id%}">編輯</a>
+<a href="{%url 'resumes:delete' resumes.id%}">刪除</a>
+<h3>留言：</h3>
+<form method="POST" action="{%url 'resumes:comments' resumes.id%}">
+  {% csrf_token %}<br />
+  <textarea name="content"></textarea><br />
+  <button>送出</button>
+</form>
+
+<ul>
+  {% for comments in comments %}
+  <li>
+    {{comments.content | linebreaks}} {{comments.create_at}}
+    <form method="POST" action="{%url 'comments:delete' comments.id%}">
+      {%csrf_token%}
+      <button>刪除留言</button>
+    </form>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}
